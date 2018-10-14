@@ -1,6 +1,5 @@
 # python-web-server-Template
 
-##
 ORIGINAL AUTHOR:
     https://gist.github.com/bradmontgomery/2219997
     
@@ -9,7 +8,6 @@ I use this template very often and decided to add multithreading capability.
 This will only execute on python 2.7, if you want to adapt for python 3, you'll need to modify the `print` syntaxes only(i think, not tested)
 
 
-##
 There are 2 files in this project. webserver.py(multithreaded python webserver with lock) and webserver-singlethread.py.
 
 I included both implementations in this project to illustrate differences between multithreading,single threading and using Locks.
