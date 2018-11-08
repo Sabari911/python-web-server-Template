@@ -57,7 +57,7 @@ class S(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-
+        #The Section below this line can be deleted for your use
         while(global_locker.acquire(0) == False and is_locking_mechanism_enabled):
             sleep(1) #i added a sleep 1 second here so it doesnt get too spammy
             print "Lock still in use", self.client_address[0], "is waiting.." 
@@ -67,6 +67,8 @@ class S(BaseHTTPRequestHandler):
 
         if is_locking_mechanism_enabled:
             global_locker.release()
+        #The Section above this line can be deleted for your use
+
 
     def do_HEAD(self):
         self._set_headers()
@@ -89,7 +91,8 @@ def run(server_class=threadedServer, handler_class=S, port=8001):
     httpd.serve_forever()
 
 if __name__ == "__main__":
-    import argparse
+    #The Section below this line can be deleted for your use
+    import argparse    
     parser = argparse.ArgumentParser(description='set Port number(default: 8001) and set thread Locking mechanism(defaut: Enabled)')
     parser.add_argument('-p','--port', dest='port', action='store', type=int, default=8001,
                         help='specify port number')
@@ -97,4 +100,7 @@ if __name__ == "__main__":
     args = parser.parse_args()    
     is_locking_mechanism_enabled=args.is_locking_mechanism_enabled
     print "Locking mechanism is ", is_locking_mechanism_enabled
-    run(port=args.port)
+    #The Section above this line can be deleted for your use
+    
+    
+    run(port=args.port) #remember to change the input argument if you delete the above lines.
