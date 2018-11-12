@@ -7,10 +7,6 @@ Very simple HTTP server in python that is multi threaded. Default port is 8001. 
 
 This will only execute on python 2.7, if you want to adapt for python 3, you'll need to modify the `print` syntaxes only(i think, not tested)
 
-This file, I've put sleep(15) right after `self.wfile.write("<html><body><h1>hi!</h1></body></html>")`. This is to 
-simulate a kind of long process.
-
-
 Usage::
     python ./webserver.py -p <port number>
 
@@ -38,8 +34,7 @@ class S(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        self.wfile.write("<html><body><h1>hi!</h1></body></html>")
-        sleep(15) #pretend there's a 15 second long operation on going
+        self.wfile.write("<html><body><h1>hi! you did a GET request</h1></body></html>")
 
 
     def do_HEAD(self):
@@ -61,7 +56,7 @@ def run(server_class=HTTPServer, handler_class=S, port=8001):
 if __name__ == "__main__":
     from sys import argv
     import argparse
-    parser = argparse.ArgumentParser(description='set Port number(default: 8001) and set thread Locking mechanism(defaut: Enabled)')
+    parser = argparse.ArgumentParser(description='set Port number(default: 8001)')
     parser.add_argument('-p','--port', dest='port', action='store', type=int, default=8001,
                         help='specify port number')
     args = parser.parse_args()    
