@@ -66,7 +66,6 @@ def run(server_class=threadedServer, handler_class=S, port=8001):
     httpd.serve_forever()
 
 if __name__ == "__main__":
-    #The Section below this line can be deleted for your use
     import argparse    
     parser = argparse.ArgumentParser(description='set Port number(default: 8001) and set thread Locking mechanism(defaut: Enabled)')
     parser.add_argument('-p','--port', dest='port', action='store', type=int, default=8001,
