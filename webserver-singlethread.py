@@ -7,6 +7,19 @@ Very simple HTTP server in python that is multi threaded. Default port is 8001. 
 
 This will only execute on python 2.7, if you want to adapt for python 3, you'll need to modify the `print` syntaxes only(i think, not tested)
 
+
+Usage::
+    To get help:
+
+    ./webserver.py -h 
+    set Port number(default: 8001) and set thread Locking mechanism(defaut: Enabled)
+    optional arguments:
+    -h, --help            show this help message and exit
+    -p PORT, --port PORT  specify port number
+
+    example:
+    python ./webserver.py -p 8002   
+
 Usage::
     python ./webserver.py -p <port number>
 
@@ -23,8 +36,8 @@ Send a POST request::
 
 """
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+import urlparse
 import SocketServer
-from time import sleep #to simulate long operation functions
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -34,30 +47,37 @@ class S(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        self.wfile.write("<html><body><h1>hi! you did a GET request</h1></body></html>")
-
+        query = urlparse.parse_qs(urlparse.urlparse(self.path).query)  #retrieve GET arguments from path
+        self.wfile.write("<html><body><h1>hi! you did a GET request</h1>")
+        self.wfile.write("<p>Your GET arguments is/are:</p>")
+        self.wfile.write(str(query))
+        self.wfile.write("</body></html>")
 
     def do_HEAD(self):
         self._set_headers()
         
-    def do_POST(self):
-        # Doesn't do anything with posted data
+    def do_POST(self):        
         self._set_headers()
-        self.wfile.write("<html><body><h1>POST!</h1></body></html>")
+        length = int(self.headers.getheader('content-length'))
+        query_string = "blank"
+        if length > 0:
+            query_string = self.rfile.read(length) 
+            query_string = urlparse.parse_qs(query_string)
+        self.wfile.write("<html><body><h1>"+ str(query_string) + "</h1></body></html>")
 
 
 def run(server_class=HTTPServer, handler_class=S, port=8001):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print 'Starting httpd... at port %s' % (str(port))
-    print 'use Ctrl+C to stop the server if using Ubuntu/Linux'
+    print 'use Ctrl+C to stop the server'
     httpd.serve_forever()
 
 if __name__ == "__main__":
-    from sys import argv
     import argparse
     parser = argparse.ArgumentParser(description='set Port number(default: 8001)')
-    parser.add_argument('-p','--port', dest='port', action='store', type=int, default=8001,
+    parser.add_argument('-p','--port', dest='port', 
+                        action='store', type=int, default=8001,
                         help='specify port number')
     args = parser.parse_args()    
 
